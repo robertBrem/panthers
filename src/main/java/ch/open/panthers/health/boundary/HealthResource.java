@@ -8,7 +8,7 @@ public class HealthResource {
 
     @GET
     public String getHealth() {
-        return "alles supi";
+        return "alles supi @chOpen";
     }
 
 }
