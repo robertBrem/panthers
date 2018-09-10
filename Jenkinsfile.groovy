@@ -21,9 +21,6 @@ podTemplate(label: 'mypod', containers: [
         stage('build image & git tag & docker push') {
             env.VERSION = semanticReleasing()
             currentBuild.displayName = env.VERSION
-            wrap([$class: 'BuildUser']) {
-                currentBuild.description = "Started by: ${BUILD_USER} (${BUILD_USER_EMAIL})"
-            }
 
             container('maven') {
                 sh "mvn versions:set -DnewVersion=${env.VERSION}"
