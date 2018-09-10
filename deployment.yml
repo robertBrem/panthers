@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: panthers
+  labels:
+    app: panthers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: panthers
+  template:
+    metadata:
+      labels:
+        app: panthers
+    spec:
+      containers:
+      - name: panthers
+        image: robertbrem/panthers:1.0.0
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /panthers/resources/health
+            port: 8080
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: panthers
+spec:
+  selector:
+    app: panthers
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 31081
+  type: NodePort
